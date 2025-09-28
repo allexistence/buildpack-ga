@@ -20,9 +20,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push image with Buildpacks
-        uses: buildpacks/github-actions@v5.9.4
-        with:
-          builder: paketobuildpacks/builder:base
-          image: ${{ secrets.DOCKER_USERNAME }}/node-buildpack-poc:latest
-          publish: true
+      - name: Install Pack CLI
+        uses: buildpacks/setup-pack@v1
+
+      - name: Build Image
+        run: |
+          pack build ${{ secrets.DOCKER_USERNAME }}/node-buildpack-poc:latest \
+            --builder paketobuildpacks/builder:base \
+            --publish
