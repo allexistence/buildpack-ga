@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push image with Buildpacks
-        uses: buildpacks/github-actions@v6
+        uses: buildpacks/github-actions@v5.9.4
         with:
           builder: paketobuildpacks/builder:base
           image: ${{ secrets.DOCKER_USERNAME }}/node-buildpack-poc:latest
