@@ -1,17 +1,22 @@
-name: Build and Publish with Buildpacks
+name: Build and Publish Node.js App with Buildpacks
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Docker
+      - name: Set up Pack CLI
+        uses: buildpacks/github-actions/setup-pack@v5.0.0
+      
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to DockerHub
@@ -20,11 +25,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Install Pack CLI
-        uses: buildpacks/setup-pack@v1
-
-      - name: Build Image
+      - name: Build and push image with Buildpacks
         run: |
           pack build ${{ secrets.DOCKER_USERNAME }}/node-buildpack-poc:latest \
             --builder paketobuildpacks/builder:base \
             --publish
+
