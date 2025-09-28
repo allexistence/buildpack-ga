@@ -27,7 +27,6 @@ jobs:
 
       - name: Build and push image with Buildpacks
         run: |
-          pack build ${{ secrets.DOCKER_USERNAME }}/node-buildpack-poc:latest \
+          pack build ${{ secrets.DOCKER_USERNAME }}/:buildpack-ga:latest \
             --builder paketobuildpacks/builder:base \
             --publish
-
